@@ -59,7 +59,7 @@ public class ShiroConfig {
         //设置未授权页面
         bean.setUnauthorizedUrl("/noauth");
         System.out.println("wang");
-
+        System.out.println("hot-fox");
         return bean;
 
     }
