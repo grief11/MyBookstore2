@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybookstore2.mapper.UserMapper">
+    <resultMap id="UserMap" type="com.example.mybookstore2.entity.User">
+        <result property="id" column="id" jdbcType="INTEGER"></result>
+        <result property="username" column="username" jdbcType="VARCHAR"></result>
+        <result property="password" column="password" jdbcType="VARCHAR"></result>
+        <result property="phone" column="phone" jdbcType="VARCHAR"></result>
+        <result property="email" column="email" jdbcType="VARCHAR"></result>
+        <result property="sex" column="sex" jdbcType="VARCHAR"></result>
+        <result property="perm" column="perm" jdbcType="VARCHAR"/>
+        <result property="role" column="role" jdbcType="VARCHAR"/>
+    </resultMap>
+
+<!--    @Select("select * from user")-->
+<!--    List<User> queryList();-->
+
+
+<!--    User queryByName(@Param("username") String username);-->
+    <select id="queryByName" resultMap="UserMap">
+        select id,username,password,phone,email,sex,perm,role
+        from bookstore.user
+        <where>
+            <if test="username != '' and username != null ">
+                usernaem = #{username}
+            </if>
+        </where>
+    </select>
+
+<!--    @Select("select * from user where username = #{username}")-->
+<!--    List<User> searchNameList(@Param("username") String username);-->
+
+
+<!--    User queryById(Integer id);-->
+    <select id="queryById" resultMap="UserMap">
+        select id,username,password,phone,email,sex,perm,role
+        from bookstore.user
+        where  id = #{id}
+    </select>
+
+<!--    List<User> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select id,username,password,phone,email,sex,perm,role
+        from bookstore.user
+        limit #{offset} #{limit}
+    </select>
+
+
+<!--    List<User> queryAll(User user);-->
+    <select id="queryAll" resultMap="UserMap">
+        select id, username, password, phone, email, sex, perm, role
+        from bookstore.user
+        <where>
+            <if test = "id!=null">
+                and id = #{id}
+            </if>
+            <if test = "username !=null and username !=''" >
+                and username = #{username}
+            </if>
+            <if test = "password !=null and password !=''" >
+                and password = #{password}
+            </if>
+            <if test = "phone !=null and phone !=''" >
+                and phone = #{phone}
+            </if>
+            <if test = "email !=null and email !=''" >
+                and email = #{email}
+            </if>
+            <if test = "sex !=null and sex !=''" >
+                and sex = #{sex}
+            </if>
+            <if test = "perm !=null and perm !=''" >
+                and perm = #{perm}
+            </if>
+            <if test = "role !=null and role !=''" >
+                and role = #{role}
+            </if>
+        </where>
+    </select>
+
+
+<!--    int insert(User user);-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into bookstore.user(username, password, phone, email, sex, perm, role)
+        values (#{username}, #{password}, #{phone}, #{email}, #{sex}, #{perm}, #{role})
+    </insert>
+
+<!--    int update(User user);-->
+    <update id="update">
+        update bookstore.user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="perm != null and perm != ''">
+                perm = #{perm},
+            </if>
+            <if test="role != null and role != ''">
+                role = #{role},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+<!--    int deleteById(Integer id);-->
+    <delete id="deleteById">
+        delete from bookstore.user where id = #{id}
+    </delete>
+
+    <select id="queryUser" resultMap="UserMap">
+        select *
+        from bookstore.user
+        where username = #{username,jdbcType=VARCHAR} AND password=#{password,jdbcType=VARCHAR}
+    </select>
+</mapper>

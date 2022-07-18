@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybookstore2.mapper.BookMapper">
+    <resultMap id="BookMap" type="com.example.mybookstore2.entity.Book">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="bookname" column="bookname" jdbcType="VARCHAR"/>
+        <result property="pub" column="pub" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="date" column="date" jdbcType="TIMESTAMP"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+        <result property="kind" column="kind" jdbcType="VARCHAR"/>
+    </resultMap>
+
+<!--    @Select("select * from book")-->
+<!--    List<Book> queryList();-->
+
+
+<!--    List<Book> queryByKind(@Param("kind") String kind);-->
+    <select id="queryByKind" resultMap="BookMap">
+        select id, bookname, pub, price, date, count, kind
+        from bookstore.book
+        <where>
+            <if test="kind != '' and kind != null">
+                and kinbd = #{kind}
+            </if>
+        </where>
+    </select>
+
+<!--    Book queryById(Integer id);-->
+        <select id="queryById" resultMap="BookMap">
+            select id, bookname, pub, price, date, count, kind
+            from bookstore.book
+            where id = #{id}
+        </select>
+
+<!--    List<Book> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);-->
+        <select id="queryAllByLimit" resultMap="BookMap">
+            select id, bookname, pub, price, date, count, kind
+            from bookstore.book
+            limit #{offset},#{limit}
+        </select>
+
+
+<!--    List<Book> queryAll(Book book);-->
+        <select id="queryAll" resultMap="BookMap">
+            select
+            id, bookname, pub, price, date, count, kind
+            from bookstore.book
+            <where>
+                <if test="id != null">
+                    and id = #{id}
+                </if>
+                <if test="bookname != null and bookname != ''">
+                    and bookname = #{bookname}
+                </if>
+                <if test="pub != null and pub != ''">
+                    and pub = #{pub}
+                </if>
+                <if test="price != null">
+                    and price = #{price}
+                </if>
+                <if test="date != null">
+                    and date = #{date}
+                </if>
+                <if test="count != null">
+                    and count = #{count}
+                </if>
+                <if test="kind != null and kind != ''">
+                    and kind = #{kind}
+                </if>
+            </where>
+        </select>
+
+<!--    int insert(Book book);-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into bookstore.book (bookname, pub, price, date, count, kind)
+        values (#{bookname}, #{pub}, #{price}, #{date}, #{count}, #{kind})
+    </insert>
+
+<!--    int update(Book book);-->
+    <update id="update">
+        update bookstore.book
+        <set>
+            <if test="bookname != null and bookname != ''">
+                bookname = #{bookname},
+            </if>
+            <if test="pub != null and pub != ''">
+                pub = #{pub},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="count != null">
+                count = #{count},
+            </if>
+            <if test="kind != null and kind != ''">
+                kind = #{kind},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+<!--    int deleteById(Integer id);-->
+    <delete id="deleteById">
+        delete
+        from bookstore.book
+        where id = #{id}
+    </delete>
+</mapper>
