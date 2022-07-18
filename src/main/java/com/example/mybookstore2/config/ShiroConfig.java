@@ -58,7 +58,7 @@ public class ShiroConfig {
         bean.setSuccessUrl("/index");
         //设置未授权页面
         bean.setUnauthorizedUrl("/noauth");
-
+        System.out.println("wang");
 
         return bean;
 
